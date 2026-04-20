@@ -3,7 +3,7 @@ HTML of HYPAGS for easy use in any browser
 
 
 ![GitHub License](https://img.shields.io/github/license/APeche/HYPAGS.html) [![https://doi.org/10.25928/5xpn-np63](https://img.shields.io/badge/DOI-10.25928%2F5xpn-np63?color=blue)](https://doi.org/10.25928/5xpn-np63)
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![Downloads](https://img.shields.io/github/downloads/APeche/HYPAGS.html/total) ![Code Size](https://img.shields.io/github/languages/code-size/APeche/HYPAGS.html) ![Watchers](https://img.shields.io/github/watchers/APeche/HYPAGS.html?style=social) ![Stars](https://img.shields.io/github/stars/APeche/HYPAGS.html?style=social)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![Code Size](https://img.shields.io/github/languages/code-size/APeche/HYPAGS.html) ![Watchers](https://img.shields.io/github/watchers/APeche/HYPAGS.html?style=social) ![Stars](https://img.shields.io/github/stars/APeche/HYPAGS.html?style=social)
 ![Forks](https://img.shields.io/github/forks/APeche/HYPAGS.html?style=social) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=APeche.HYPAGS.html)
 
 #HYPAGS
