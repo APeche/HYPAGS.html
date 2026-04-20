@@ -18,11 +18,9 @@ For the use of the HYPAGS do the following steps:
     (1) Download HYPAGS_web.html 
     (2) Simply click on HYPAGS_web.html. It should open. 
 
-Screeshot:
+Screenshot:
 <img width="1346" height="1256" alt="grafik" src="https://github.com/user-attachments/assets/ed325a62-664a-4805-8e47-b9eac320af9a" />
 
-	
-	
 The mathematical model, application range and use of the program described in:
 Peche A., & Houben, G. (2022). Estimating characteristic grain diameters and effective porosity from hydraulic conductivity data. Groundwater, Wiley, https://doi.org/10.1111/gwat.13266.
 
