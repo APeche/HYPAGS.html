@@ -1,6 +1,8 @@
 # HYPAGS_web.html
 HTML of HYPAGS for easy use in any browser
 
+Simply click on:
+https://apeche.github.io/HYPAGS.html/
 
 ![GitHub License](https://img.shields.io/github/license/APeche/HYPAGS.html) [![https://doi.org/10.25928/5xpn-np63](https://img.shields.io/badge/DOI-10.25928%2F5xpn-np63?color=blue)](https://doi.org/10.25928/5xpn-np63)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![Code Size](https://img.shields.io/github/languages/code-size/APeche/HYPAGS.html) ![Watchers](https://img.shields.io/github/watchers/APeche/HYPAGS.html?style=social) ![Stars](https://img.shields.io/github/stars/APeche/HYPAGS.html?style=social)
@@ -10,8 +12,9 @@ HTML of HYPAGS for easy use in any browser
 
 ![HYPAGS](https://user-images.githubusercontent.com/11518814/185891201-7e94ed60-8650-43b2-91f9-ee290c9effe9.png)
 
+Also, you may download.
 
-Current version of the HYPAGS model for easy use in any browser
+Current version of the downloaded HYPAGS model for easy use in any browser
 
 For the use of the HYPAGS do the following steps:
 
