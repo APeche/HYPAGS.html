@@ -26,12 +26,7 @@ Peche A., & Houben, G. (2022). Estimating characteristic grain diameters and eff
 
 Peche, A., Houben, G., & Altfelder, S. (2023). Approximation of van Genuchten parameter ranges from hydraulic conductivity data. Groundwater, Wiley.  https://doi.org/10.1111/gwat.13365
 
-This is a stand-alone GUI. No installation required.
-
 In case of arising problems or need of support, please contact me at aaron.peche@bgr.de
-
-The html code of HYPAGS is also provided in this repository
-
 
 Some aspects about the installation of the python GUI (see https://github.com/APeche/HYPAGS), practical use and insights are given in this video tutorial:
 
