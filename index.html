@@ -410,6 +410,8 @@
             <!-- Plot Container -->
             <div class="plot-container">
                 <div id="plot-sieve"></div>
+                <div id="plot-retention" style="margin-top: 30px;"></div>
+                <div id="plot-relk" style="margin-top: 30px;"></div>
             </div>
         </div>
     </div>
@@ -424,6 +426,8 @@
             <p>HYPAGS (HYdraulic Parameters And Grain Sizes) model enables to retrieve virtual sieve curves (by means of representative grain sizes d₁₀, d₂₀, d₅₀, d₆₀ [m]) and hydraulically relevant parameters effective porosity nₑ [-] and hydraulic conductivity K [m/s] by single input values of K, d₁₀, d₂₀.</p>
             
             <p><strong>⚠️ PLEASE NOTE:</strong> The model is valid for coefficients of uniformity Cᵤ &lt;~ 3.</p>
+			
+            <p><strong>⚠️ PLEASE ALSO NOTE:</strong> The model assumes a residual water content of zero - please adjust the retention curve plot accordingly.</p>
 			
 			<p><strong>⚠️ PLEASE ALSO NOTE:</strong> For a more flexible use of HYPAGS, check out the pedon package by Martin Vonk: https://github.com/martinvonk/pedon</p>
             
@@ -475,8 +479,10 @@
             document.getElementById('results').style.display = 'none';
             currentResults = null;
             
-            // Clear plot
+            // Clear plots
             Plotly.purge('plot-sieve');
+            Plotly.purge('plot-retention');
+            Plotly.purge('plot-relk');
         }
 
         // Iterator function (same as Python version)
@@ -645,6 +651,10 @@
             
             // Plot sieve curve
             plotSieveCurve(currentResults);
+            
+            // Plot retention and relative conductivity curves
+            plotRetentionCurve(currentResults);
+            plotRelKCurve(currentResults);
         }
 
         // Display results
@@ -780,7 +790,138 @@
             Plotly.newPlot('plot-sieve', [trace], layout, { responsive: true });
         }
 
-        // Show warning
+        // Plot retention curve  (van Genuchten Se(h))
+        function plotRetentionCurve(results) {
+			const { alpha: alphat, n: nt, ne: net, K: Kt } = results;
+			// θ_r (residual water content) 
+			const theta_rt = 0.0;
+			const N = 1000;
+			const h = Array.from({ length: N }, (_, i) => i * 10 / (N - 1)); // 0 … 10 m
+			
+			// Calculate theta first
+			const theta = h.map(hi => {
+				return theta_rt + (net - theta_rt) / Math.pow(Math.pow(alphat * hi, nt) + 1, 1 - 1 / nt);
+			});
+			
+			// Convert theta to effective saturation S
+			const S = theta.map(theta_i => (theta_i - theta_rt) / (net - theta_rt));
+			
+			const trace = {
+				x: S,  // Changed from theta to S
+				y: h,
+				mode: 'lines',
+				line: { color: 'black', width: 3 }
+			};
+			
+			const labelText =
+				`HYPAGS estimation of mean:<br>` +
+				`<i>n</i> = ${nt.toFixed(3)}<br>` +
+				`α = ${alphat.toFixed(3)} 1/m<br>` +
+				`θ<sub>s</sub> = ${net.toFixed(3)}<br>`;
+			
+			const annotations = [{
+				x: 0.67,
+				y: 0.82,
+				xref: 'paper',
+				yref: 'paper',
+				text: labelText,
+				showarrow: false,
+				align: 'left',
+				bgcolor: 'white',
+				bordercolor: 'black',
+				borderwidth: 1,
+				borderpad: 8,
+				font: { size: 11 }
+			}];
+			
+			const layout = {
+				title: 'Retention Curve (Effective Saturation)',
+				xaxis: {
+					title: 'S<sub>e</sub> [-]',  // Changed from θ to Se
+					range: [0, 1],  // S ranges from 0 to 1
+					gridcolor: '#ddd'
+				},
+				yaxis: {
+					title: '-h [m]',
+					gridcolor: '#ddd'
+				},
+				annotations: annotations,
+				showlegend: false,
+				height: 600,
+				margin: { l: 70, r: 50, t: 80, b: 70 }
+			};
+			
+			Plotly.newPlot('plot-retention', [trace], layout, { responsive: true });
+		}
+
+        // Plot relative hydraulic conductivity curve  K(h)
+        function plotRelKCurve(results) {
+            const { alpha: alphat, n: nt, ne: net, K: Kt } = results;
+            const theta_rt = 0.00;
+            const m = 1 - 1 / nt;
+
+            const N = 1000;
+            // Avoid h=0 to prevent division by zero / log(0)
+            const h = Array.from({ length: N }, (_, i) => (i + 1) * 10 / N);
+            
+            const Karr = h.map(hi => {
+                const theta = theta_rt + (net - theta_rt) / Math.pow(Math.pow(alphat * hi, nt) + 1, m);
+                const S = (theta - theta_rt) / (net - theta_rt);
+                const Sclip = Math.max(0, Math.min(1, S));
+                // Mualem-van Genuchten: K = Kt * S^0.5 * (1-(1-S^(1/m))^m)^2
+                const inner = 1 - Math.pow(1 - Math.pow(Sclip, 1 / m), m);
+                return Kt * Math.pow(Sclip, 0.5) * Math.pow(inner, 2);
+            });
+
+            const trace = {
+                x: Karr,
+                y: h,
+                mode: 'lines',
+                line: { color: 'black', width: 3 }
+            };
+
+            const labelText =
+                `HYPAGS estimation of mean:<br>` +
+                `<i>n</i> = ${nt.toFixed(3)}<br>` +
+                `α = ${alphat.toFixed(3)} 1/m<br>` +
+                `K = ${Kt.toExponential(6)} m/s`;
+
+            const annotations = [{
+                x: 0.03,
+                y: 0.82,
+                xref: 'paper',
+                yref: 'paper',
+                text: labelText,
+                showarrow: false,
+                align: 'left',
+                bgcolor: 'white',
+                bordercolor: 'black',
+                borderwidth: 1,
+                borderpad: 8,
+                font: { size: 11 }
+            }];
+
+            const layout = {
+                title: 'Relative Hydraulic Conductivity Curve',
+                xaxis: {
+                    type: 'log',
+                    title: 'K(-h) [m/s]',
+                    gridcolor: '#ddd'
+                },
+                yaxis: {
+                    title: '-h [m]',
+                    gridcolor: '#ddd'
+                },
+                annotations: annotations,
+                showlegend: false,
+                height: 600,
+                margin: { l: 70, r: 50, t: 80, b: 70 }
+            };
+
+            Plotly.newPlot('plot-relk', [trace], layout, { responsive: true });
+        }
+
+
         function showWarning(message) {
             alert('⚠️ WARNING:\n\n' + message + '\n\nModel bounds:\n' +
                   'K [m/s]    - Min: 2.87×10⁻⁷, Max: 2.60×10⁻²\n' +
@@ -829,12 +970,24 @@
             }
         };
 
-        // Initialize with empty plot
+        // Initialize with empty plots
         window.onload = function() {
             Plotly.newPlot('plot-sieve', [], {
                 title: 'Sieve Curve (awaiting calculation)',
                 xaxis: { type: 'log', title: 'Grain size [m]' },
                 yaxis: { title: 'Mass/sieving fraction of sample [%]', range: [0, 100] },
+                height: 600
+            });
+            Plotly.newPlot('plot-retention', [], {
+                title: 'Retention Curve (awaiting calculation)',
+                xaxis: { title: 'θ [-]' },
+                yaxis: { title: '-h [m]' },
+                height: 600
+            });
+            Plotly.newPlot('plot-relk', [], {
+                title: 'Relative Hydraulic Conductivity Curve (awaiting calculation)',
+                xaxis: { type: 'log', title: 'K(-h) [m/s]' },
+                yaxis: { title: '-h [m]' },
                 height: 600
             });
         };
