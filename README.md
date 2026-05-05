@@ -19,7 +19,7 @@ Current version of the downloaded HYPAGS model for easy use in any browser
 For the use of the HYPAGS do the following steps:
 
     (1) Download index.html 
-    (2) Simply click on HYPAGS_web.html. It should open. 
+    (2) Simply click on index.html. It should open. 
 
 Screenshot:
 <img width="1346" height="1256" alt="grafik" src="https://github.com/user-attachments/assets/ed325a62-664a-4805-8e47-b9eac320af9a" />
