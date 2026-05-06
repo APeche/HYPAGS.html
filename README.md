@@ -1,4 +1,4 @@
-# HYPAGS_web.html
+# HYPAGS web app
 HTML of HYPAGS for easy use in any browser
 
 Simply click on:
